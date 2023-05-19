@@ -104,6 +104,7 @@ function Index() {
             pokeLoader={SetPokeLoader}
             cardData={cardData}
             cardClear={cardClear}
+            SetcardData={SetcardData}
           />
         </section>
 

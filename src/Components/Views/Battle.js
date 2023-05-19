@@ -15,6 +15,7 @@ function Battle({ close, Pokemon1, Pokemon2 }) {
   function Battle(move, PokeName, Fighter) {
     const randomNumber = Math.floor(Math.random() * 20) + 5;
 
+    //Logic for Pokemon 1
     if (Fighter === 1) {
       let newHP = PokeHpOp - randomNumber;
       if (newHP <= 0) {
@@ -27,6 +28,7 @@ function Battle({ close, Pokemon1, Pokemon2 }) {
       SetDisableButtonFighter(true);
     }
 
+    //Logic for Pokemon 2
     if (Fighter === 2) {
       let newHP = PokeHp - randomNumber;
       if (newHP <= 0) {
@@ -47,7 +49,7 @@ function Battle({ close, Pokemon1, Pokemon2 }) {
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 w-full z-50 overflow-hidden bg-gray-100 bg-opacity-75 flex flex-col items-center justify-center">
-      <div className="p-8 bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100">
+      <div className="p-8 bg-gray-100 items-center border border-gray-200 rounded-lg shadow md:flex-row">
         <div className="grid-cols-1 text-right">
           <h1>Round #{Round}</h1>
         </div>
@@ -65,6 +67,7 @@ function Battle({ close, Pokemon1, Pokemon2 }) {
               Round={Round}
               DisableButton={DisableButton}
               DisableButtonFighter={DisableButtonFighter}
+              Winner={Winner}
             />
           </div>
 
@@ -100,6 +103,7 @@ function Battle({ close, Pokemon1, Pokemon2 }) {
               Round={Round}
               DisableButton={DisableButton}
               DisableButtonFighter={DisableButtonFighter}
+              Winner={Winner}
             />
           </div>
         </div>

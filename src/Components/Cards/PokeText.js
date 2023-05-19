@@ -21,7 +21,7 @@ function PokeText({ text, speed }) {
   }, [text, speed]);
 
   return (
-    <div className="p-8 bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 ">
+    <div className="p-8 bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl">
       {displayText}
     </div>
   );

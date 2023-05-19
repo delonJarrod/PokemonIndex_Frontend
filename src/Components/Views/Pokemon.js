@@ -33,6 +33,7 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
 
   function Search(e) {
     e.preventDefault();
+    debugger;
     if (!search) {
       SetcardData(cardClear);
     } else {

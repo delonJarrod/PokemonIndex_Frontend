@@ -11,6 +11,7 @@ function PokeBattleCard({
   DisableButton,
   Round,
   DisableButtonFighter,
+  Winner,
 }) {
   const [PokeStats, SetStats] = useState([]);
   const [PokeMoves, SetPokeMoves] = useState([]);
@@ -143,7 +144,8 @@ function PokeBattleCard({
                             {PokeMoves.chargedMoves.map((item) => (
                               <div>
                                 {(DisableButton && Fighter === 2) ||
-                                (DisableButtonFighter && Fighter === 1) ? (
+                                (DisableButtonFighter && Fighter === 1) ||
+                                Winner ? (
                                   <button
                                     disabled
                                     class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none rounded text-sm"
@@ -167,7 +169,8 @@ function PokeBattleCard({
                             {PokeMoves.eliteChargedMoves.map((item) => (
                               <div>
                                 {(DisableButton && Fighter === 2) ||
-                                (DisableButtonFighter && Fighter === 1) ? (
+                                (DisableButtonFighter && Fighter === 1) ||
+                                Winner ? (
                                   <button
                                     disabled
                                     class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none rounded text-sm"
@@ -190,7 +193,8 @@ function PokeBattleCard({
                             {PokeMoves.fastMoves.map((item) => (
                               <div>
                                 {(DisableButton && Fighter === 2) ||
-                                (DisableButtonFighter && Fighter === 1) ? (
+                                (DisableButtonFighter && Fighter === 1) ||
+                                Winner ? (
                                   <button
                                     disabled
                                     class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none rounded text-sm"
@@ -214,7 +218,8 @@ function PokeBattleCard({
                             {PokeMoves.eliteFastMoves.map((item) => (
                               <div>
                                 {(DisableButton && Fighter === 2) ||
-                                (DisableButtonFighter && Fighter === 1) ? (
+                                (DisableButtonFighter && Fighter === 1) ||
+                                Winner ? (
                                   <button
                                     disabled
                                     class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none rounded text-sm"
