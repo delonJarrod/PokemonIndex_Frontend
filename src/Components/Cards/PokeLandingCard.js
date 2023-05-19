@@ -1,17 +1,28 @@
 import { useState } from "react";
 import PokePop from "../Cards/PokePopupCard.js";
 
-function PokeLandingCard({ form, pokeId, pokeName, pokeType }) {
+function PokeLandingCard({
+  form,
+  pokeId,
+  pokeName,
+  pokeType,
+  SetPokeBattle,
+  SetPokeBattle2,
+  SetBattleCheck,
+  BattleCheck,
+}) {
   const [PokePopShow, SetPokePopShow] = useState(false);
+  const [PokebattleName, SetPokebattleName] = useState([]);
 
   function showPokePop() {
     SetPokePopShow(true);
   }
+
   return (
     <div>
       <div
         onClick={showPokePop}
-        className="border border-gray-100 shadow hover:shadow-lg bg-white cursor-pointer body-font"
+        className="border border-gray-100 shadow hover:shadow-lg bg-white cursor-pointer body-font hover:scale-95"
       >
         <div className="p-5">
           <div className="grid grid-cols-1">
@@ -25,7 +36,7 @@ function PokeLandingCard({ form, pokeId, pokeName, pokeType }) {
               ))}
             </p>
           </div>
-          <p className="mb-2 text-xl font-bold tracking-tight ">{pokeName}</p>
+          <p className="mb-2 text-xl font-bold tracking-tight">{pokeName}</p>
         </div>
         <div className="relative h-1/2 w-full">
           <img
@@ -42,6 +53,10 @@ function PokeLandingCard({ form, pokeId, pokeName, pokeType }) {
             PokeName={pokeName}
             PokeType={pokeType}
             show={SetPokePopShow}
+            SetPokeBattle={SetPokeBattle}
+            SetPokeBattle2={SetPokeBattle2}
+            SetBattleCheck={SetBattleCheck}
+            BattleCheck={BattleCheck}
           />
         </div>
       )}

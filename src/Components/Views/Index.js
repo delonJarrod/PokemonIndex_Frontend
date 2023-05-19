@@ -5,10 +5,30 @@ import Loader from "../Loader/PokemonLoader.js";
 function Index() {
   const [PokeLoader, SetPokeLoader] = useState(false);
   const [Year, SetYear] = useState(null);
+  const [cardData, SetcardData] = useState([]);
+  const [cardClear, SetCardClear] = useState([]);
+
+  let API = "https://localhost:44398";
 
   useEffect(() => {
     const d = new Date();
     SetYear(d.getFullYear());
+    SetPokeLoader(true);
+    fetch(API + "/Get_Pokemon_Names_And_Type", {
+      method: "GET", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        SetcardData(data);
+        SetCardClear(data);
+        SetPokeLoader(false);
+        SetCardClear = { SetCardClear };
+        SetcardData = { SetcardData };
+      })
+      .catch((error) => {});
   }, []);
 
   return (
@@ -80,8 +100,13 @@ function Index() {
         </section>
 
         <section id="Pokemon" class="text-gray-700 body-font">
-          <Pokemon pokeLoader={SetPokeLoader} />
+          <Pokemon
+            pokeLoader={SetPokeLoader}
+            cardData={cardData}
+            cardClear={cardClear}
+          />
         </section>
+
         {PokeLoader && (
           <section id="Loader">
             <Loader />

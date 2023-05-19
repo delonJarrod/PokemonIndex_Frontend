@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import Loader from "../Loader/PokemonLoader.js";
 import SimpleLoader from "../Loader/PokeSimpleLoader.js";
 
-function PokePopupCard({ PokeId, PokeName, PokeType, show }) {
+function PokePopupCard({
+  PokeId,
+  PokeName,
+  PokeType,
+  show,
+  SetPokeBattle,
+  SetPokeBattle2,
+  SetBattleCheck,
+  BattleCheck,
+}) {
   const [PokeStats, SetStats] = useState([]);
   const [PokeEvolution, SetPokeEvolution] = useState([]);
   const [PokeMoves, SetPokeMoves] = useState([]);
@@ -12,8 +21,10 @@ function PokePopupCard({ PokeId, PokeName, PokeType, show }) {
   const [PokeLoaderStats, SetPokeLoaderStats] = useState(false);
   const [PokeLoaderEvolution, SetPokeLoaderEvolution] = useState(false);
   const [PokeLoaderPokeMoves, SetPokeLoaderPokeMoves] = useState(false);
+  const [DetailsHideShow, SetDetailsHideShow] = useState(false);
 
   let API = "https://localhost:44398";
+  let checker = 0;
 
   useEffect(() => {
     //Getting Pokemon Image
@@ -96,181 +107,228 @@ function PokePopupCard({ PokeId, PokeName, PokeType, show }) {
     show(false);
     SetPokeImage("https://wallpaperaccess.com/download/pokemon-pokeball-24936");
   }
+
+  function SelectBattle(name, e) {
+    e.preventDefault();
+    if (BattleCheck <= 1) {
+      if (BattleCheck == 0) {
+        SetPokeBattle(name);
+      }
+      if (BattleCheck == 1) {
+        SetPokeBattle2(name);
+      }
+    }
+    checker = checker + 1;
+    SetBattleCheck(checker);
+    show(false);
+  }
+
+  function ViewDetails() {
+    SetDetailsHideShow(true);
+    SetPokeImage("https://wallpaperaccess.com/download/pokemon-pokeball-24936");
+  }
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-100 bg-opacity-75 flex flex-col items-center justify-center">
-      <div className=" bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 overflow-auto no-scrollbar">
-        <div className="flex flex-col ">
-          <img class="" src={PokeImage} alt="" />
-
-          <div className="grid grid-cols-1 p-5">
-            <div className="grid grid-cols-2">
-              <p>PokeId: {PokeId}</p>
-
-              <p>
-                Type:
-                <span>
-                  {PokeType.map((item) => (
-                    <span className="overflow-auto no-scrollbar">{item},</span>
-                  ))}
-                </span>
-              </p>
-              <br />
+      {DetailsHideShow == false && (
+        <div className="p-8 bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100">
+          <div className="grid grid-cols-2 p-5 gap-6">
+            <div className="text-center pt-5 pb-5 col-span-2">
+              <p className="text-2xl font-bold">{PokeName}</p>
             </div>
-            <p className="text-lg">{PokeName}</p>
-            <br />
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
-              <h2 className="text-xl bold text-grey-900">
-                Pokemon Power Stats
-              </h2>
-              <br />
-              {PokeLoaderStats == false && (
-                <div className="grid grid-cols-2 ">
-                  <p>Attack:</p>
-                  <p>{PokeStats.baseAttack}</p>
-                  <p>Defense:</p>
-                  <p> {PokeStats.baseDefense}</p>
-                  <p>Stamina:</p>
-                  <p>{PokeStats.baseStamina}</p>
-                </div>
-              )}
-              <div>
-                {PokeLoaderStats && (
-                  <section id="Loader" className="text-center">
-                    <SimpleLoader />
-                  </section>
-                )}
+
+            <button
+              onClick={(e) => SelectBattle({ PokeName }, e)}
+              class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+            >
+              Select
+            </button>
+
+            <button
+              onClick={ViewDetails}
+              class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      )}
+      {DetailsHideShow && (
+        <div className=" bg-white items-center border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 overflow-auto no-scrollbar">
+          <div className="flex flex-col ">
+            <img class="" src={PokeImage} alt="" />
+
+            <div className="grid grid-cols-1 p-5">
+              <div className="grid grid-cols-2">
+                <p>PokeId: {PokeId}</p>
+
+                <p>
+                  Type:
+                  <span>
+                    {PokeType.map((item) => (
+                      <span className="overflow-auto no-scrollbar">
+                        {item},
+                      </span>
+                    ))}
+                  </span>
+                </p>
+                <br />
               </div>
-            </div>
-
-            <br />
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
-              {PokeLoaderEvolution == false && (
+              <p className="text-lg">{PokeName}</p>
+              <br />
+              <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
+                <h2 className="text-xl bold text-grey-900">
+                  Pokemon Power Stats
+                </h2>
+                <br />
+                {PokeLoaderStats == false && (
+                  <div className="grid grid-cols-2 ">
+                    <p>Attack:</p>
+                    <p>{PokeStats.baseAttack}</p>
+                    <p>Defense:</p>
+                    <p> {PokeStats.baseDefense}</p>
+                    <p>Stamina:</p>
+                    <p>{PokeStats.baseStamina}</p>
+                  </div>
+                )}
                 <div>
-                  {PokeEvolution && (
-                    <div>
-                      <h2 className="text-xl bold text-grey-900">
-                        Pokemon Next Evolution
-                      </h2>
-                      <br />
-                      <div className="grid grid-cols-2 ">
-                        <p>Evolves Into:</p>
-                        <p>{PokeEvolution.pokemonName}</p>
-                        <p>Rare Candy Required:</p>
-                        <p> {PokeEvolution.candyRequired}</p>
-                        <p>PokeID:</p>
-                        <p>{PokeEvolution.pokemonId}</p>
+                  {PokeLoaderStats && (
+                    <section id="Loader" className="text-center">
+                      <SimpleLoader />
+                    </section>
+                  )}
+                </div>
+              </div>
+
+              <br />
+              <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
+                {PokeLoaderEvolution == false && (
+                  <div>
+                    {PokeEvolution && (
+                      <div>
+                        <h2 className="text-xl bold text-grey-900">
+                          Pokemon Next Evolution
+                        </h2>
+                        <br />
+                        <div className="grid grid-cols-2 ">
+                          <p>Evolves Into:</p>
+                          <p>{PokeEvolution.pokemonName}</p>
+                          <p>Rare Candy Required:</p>
+                          <p> {PokeEvolution.candyRequired}</p>
+                          <p>PokeID:</p>
+                          <p>{PokeEvolution.pokemonId}</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              )}
-              <div>
-                {PokeLoaderEvolution && (
-                  <section id="Loader" className="text-center">
-                    <SimpleLoader />
-                  </section>
+                    )}
+                  </div>
                 )}
-              </div>
-            </div>
-            {/*Pokemon Moves*/}
-
-            <br />
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
-              {PokeLoaderPokeMoves == false && (
                 <div>
-                  {PokeMoves && (
-                    <div>
-                      <h2 className="text-xl bold text-grey-900">
-                        Pokemon Moves
-                      </h2>
-                      <br />
-                      {PokeMoves.chargedMoves && (
-                        <div>
-                          <h1 className="text-lg bold text-grey-900">
-                            Charged Moves
-                          </h1>
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            {PokeMoves.chargedMoves.map((item) => (
-                              <p>
-                                {"-> "}
-                                {item}.
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      <br />
-                      {PokeMoves.eliteChargedMoves && (
-                        <div>
-                          <h1 className="text-lg bold text-grey-900">
-                            Elite Charged Moves
-                          </h1>
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            {PokeMoves.eliteChargedMoves.map((item) => (
-                              <p>
-                                {"-> "}
-                                {item}.
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      <br />
-                      {PokeMoves.fastMoves && (
-                        <div>
-                          <h1 className="text-lg bold text-grey-900">
-                            Fast Moves
-                          </h1>
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            {PokeMoves.fastMoves.map((item) => (
-                              <p>
-                                {"-> "}
-                                {item}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <br />
-                      {PokeMoves.eliteFastMoves && (
-                        <div>
-                          <h1 className="text-lg bold text-grey-900">
-                            Elite Fast Moves
-                          </h1>
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            {PokeMoves.eliteFastMoves.map((item) => (
-                              <p>
-                                {"-> "}
-                                {item}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  {PokeLoaderEvolution && (
+                    <section id="Loader" className="text-center">
+                      <SimpleLoader />
+                    </section>
                   )}
                 </div>
-              )}
-              <div>
-                {PokeLoaderPokeMoves && (
-                  <section id="Loader" className="text-center">
-                    <SimpleLoader />
-                  </section>
+              </div>
+              {/*Pokemon Moves*/}
+
+              <br />
+              <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
+                {PokeLoaderPokeMoves == false && (
+                  <div>
+                    {PokeMoves && (
+                      <div>
+                        <h2 className="text-xl bold text-grey-900">
+                          Pokemon Moves
+                        </h2>
+                        <br />
+                        {PokeMoves.chargedMoves && (
+                          <div>
+                            <h1 className="text-lg bold text-grey-900">
+                              Charged Moves
+                            </h1>
+                            <div className="grid grid-cols-1">
+                              {PokeMoves.chargedMoves.map((item) => (
+                                <p>
+                                  {"->"}
+                                  {item}.
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        <br />
+                        {PokeMoves.eliteChargedMoves && (
+                          <div>
+                            <h1 className="text-lg bold text-grey-900">
+                              Elite Charged Moves
+                            </h1>
+                            <div className="grid grid-cols-1">
+                              {PokeMoves.eliteChargedMoves.map((item) => (
+                                <p>
+                                  {"->"}
+                                  {item}.
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        <br />
+                        {PokeMoves.fastMoves && (
+                          <div>
+                            <h1 className="text-lg bold text-grey-900">
+                              Fast Moves
+                            </h1>
+                            <div className="grid grid-cols-1">
+                              {PokeMoves.fastMoves.map((item) => (
+                                <p>
+                                  {"->"}
+                                  {item}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <br />
+                        {PokeMoves.eliteFastMoves && (
+                          <div>
+                            <h1 className="text-lg bold text-grey-900">
+                              Elite Fast Moves
+                            </h1>
+                            <div className="grid grid-cols-1">
+                              {PokeMoves.eliteFastMoves.map((item) => (
+                                <p>
+                                  {"->"}
+                                  {item}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
+                <div>
+                  {PokeLoaderPokeMoves && (
+                    <section id="Loader" className="text-center">
+                      <SimpleLoader />
+                    </section>
+                  )}
+                </div>
               </div>
             </div>
           </div>
+          <div>
+            <button
+              onClick={close}
+              class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+            >
+              Close
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            onClick={close}
-            class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
-          >
-            Close
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

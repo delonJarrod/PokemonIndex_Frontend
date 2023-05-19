@@ -1,30 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PokeLandingCards from "../Cards/PokeLandingCard.js";
+import Battle from "../Views/Battle.js";
 
-function Pokemon({ pokeLoader }) {
-  const [cardData, SetcardData] = useState([]);
-  const [cardClear, SetCardClear] = useState([]);
+function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
   const [search, SetSearch] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage, setCardsPerPage] = useState(8);
-  let API = "https://localhost:44398";
-
-  useEffect(() => {
-    pokeLoader(true);
-    fetch(API + "/Get_Pokemon_Names_And_Type", {
-      method: "GET", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        SetcardData(data);
-        SetCardClear(data);
-        pokeLoader(false);
-      })
-      .catch((error) => {});
-  }, []);
+  const [PokeBattles, SetPokeBattle] = useState("");
+  const [PokeBattles2, SetPokeBattle2] = useState("");
+  const [BattleCheck, SetBattleCheck] = useState(0);
+  const [PokeBattle, SetPokePokeBattle] = useState(false);
 
   // Get current cards
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -70,6 +55,9 @@ function Pokemon({ pokeLoader }) {
     }
   }
 
+  function battle() {
+    SetPokePokeBattle(true);
+  }
   return (
     <div class="bg-gray-100">
       <div id="type" class="text-gray-700 body-font md:pb-10">
@@ -104,9 +92,9 @@ function Pokemon({ pokeLoader }) {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         ></path>
                       </svg>
@@ -127,17 +115,79 @@ function Pokemon({ pokeLoader }) {
                   </div>
                 </form>
               </div>
+
+              {PokeBattles.PokeName && (
+                <div className="text-center md:col-span-2 w-full p-8 bg-white items-center border border-gray-200 rounded-3xl shadow mb-10">
+                  <div className="grid grid-cols-1 md:grid-cols-3">
+                    <div>
+                      {PokeBattles.PokeName && (
+                        <h1 className="text-3xl font-bold tracking-tight italic">
+                          {PokeBattles.PokeName}
+                        </h1>
+                      )}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {" "}
+                      {/* Add this div with flex classes */}
+                      <img
+                        alt="VS"
+                        src="https://freepngimg.com/thumb/symbol/97383-versus-pic-png-file-hd.png"
+                        style={{ height: "100px" }}
+                      />
+                    </div>
+                    <div>
+                      {PokeBattles2.PokeName && (
+                        <h1 className="text-3xl font-bold tracking-tight italic">
+                          {PokeBattles2.PokeName}
+                        </h1>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-6">
+                    <div>
+                      <button
+                        onClick={battle}
+                        class=" w-full rounded-3xl text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+                      >
+                        Change
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={battle}
+                        class=" w-full rounded-3xl text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+                      >
+                        Battle
+                      </button>
+                    </div>
+
+                    <div>
+                      <button
+                        onClick={battle}
+                        class=" w-full rounded-3xl text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+                      >
+                        Change
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {currentCards.map((item) => (
-                <PokeLandingCards
-                  key={item.Id}
-                  form={item.form}
-                  pokeId={item.pokemonId}
-                  pokeName={item.pokemonName}
-                  pokeType={item.type}
-                />
+                <div key={item.Id}>
+                  <PokeLandingCards
+                    form={item.form}
+                    pokeId={item.pokemonId}
+                    pokeName={item.pokemonName}
+                    pokeType={item.type}
+                    SetPokeBattle={SetPokeBattle}
+                    SetPokeBattle2={SetPokeBattle2}
+                    SetBattleCheck={SetBattleCheck}
+                    BattleCheck={BattleCheck}
+                  />{" "}
+                </div>
               ))}
             </div>
           </div>
@@ -183,6 +233,15 @@ function Pokemon({ pokeLoader }) {
           {">"}
         </button>
       </div>
+      {PokeBattle && (
+        <section id="Battle">
+          <Battle
+            close={SetPokePokeBattle}
+            Pokemon1={PokeBattles}
+            Pokemon2={PokeBattles2}
+          />
+        </section>
+      )}
     </div>
   );
 }
