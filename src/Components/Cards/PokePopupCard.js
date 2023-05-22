@@ -9,6 +9,8 @@ function PokePopupCard({
   show,
   SetPokeBattle,
   SetPokeBattle2,
+  SetPokeBattlesType,
+  SetPokeBattlesType2,
   SetBattleCheck,
   BattleCheck,
 }) {
@@ -113,9 +115,11 @@ function PokePopupCard({
     if (BattleCheck <= 1) {
       if (BattleCheck == 0) {
         SetPokeBattle(name);
+        SetPokeBattlesType(PokeType);
       }
       if (BattleCheck == 1) {
         SetPokeBattle2(name);
+        SetPokeBattlesType2(PokeType);
       }
     }
     checker = checker + 1;

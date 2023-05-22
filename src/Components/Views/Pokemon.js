@@ -8,6 +8,8 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
   const [cardsPerPage, setCardsPerPage] = useState(8);
   const [PokeBattles, SetPokeBattle] = useState("");
   const [PokeBattles2, SetPokeBattle2] = useState("");
+  const [PokeBattlesType, SetPokeBattlesType] = useState();
+  const [PokeBattlesType2, SetPokeBattlesType2] = useState();
   const [BattleCheck, SetBattleCheck] = useState(0);
   const [PokeBattle, SetPokePokeBattle] = useState(false);
 
@@ -33,7 +35,6 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
 
   function Search(e) {
     e.preventDefault();
-    debugger;
     if (!search) {
       SetcardData(cardClear);
     } else {
@@ -122,9 +123,18 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
                   <div className="grid grid-cols-1 md:grid-cols-3">
                     <div>
                       {PokeBattles.PokeName && (
-                        <h1 className="text-3xl font-bold tracking-tight italic">
-                          {PokeBattles.PokeName}
-                        </h1>
+                        <div>
+                          <h1 className="text-3xl font-bold tracking-tight italic">
+                            {PokeBattles.PokeName}
+                          </h1>
+                          <span>
+                            {PokeBattlesType.map((item) => (
+                              <span className="overflow-auto no-scrollbar">
+                                {item},
+                              </span>
+                            ))}
+                          </span>
+                        </div>
                       )}
                     </div>
                     <div className="flex justify-center items-center">
@@ -138,9 +148,18 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
                     </div>
                     <div>
                       {PokeBattles2.PokeName && (
-                        <h1 className="text-3xl font-bold tracking-tight italic">
-                          {PokeBattles2.PokeName}
-                        </h1>
+                        <div>
+                          <h1 className="text-3xl font-bold tracking-tight italic">
+                            {PokeBattles2.PokeName}
+                          </h1>
+                          <span>
+                            {PokeBattlesType2.map((item) => (
+                              <span className="overflow-auto no-scrollbar">
+                                {item},
+                              </span>
+                            ))}
+                          </span>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -185,6 +204,8 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
                     pokeType={item.type}
                     SetPokeBattle={SetPokeBattle}
                     SetPokeBattle2={SetPokeBattle2}
+                    SetPokeBattlesType={SetPokeBattlesType}
+                    SetPokeBattlesType2={SetPokeBattlesType2}
                     SetBattleCheck={SetBattleCheck}
                     BattleCheck={BattleCheck}
                   />{" "}
@@ -240,6 +261,8 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
             close={SetPokePokeBattle}
             Pokemon1={PokeBattles}
             Pokemon2={PokeBattles2}
+            PokeBattlesType={PokeBattlesType}
+            PokeBattlesType2={PokeBattlesType2}
           />
         </section>
       )}

@@ -8,6 +8,8 @@ function PokeLandingCard({
   pokeType,
   SetPokeBattle,
   SetPokeBattle2,
+  SetPokeBattlesType,
+  SetPokeBattlesType2,
   SetBattleCheck,
   BattleCheck,
 }) {
@@ -55,6 +57,8 @@ function PokeLandingCard({
             show={SetPokePopShow}
             SetPokeBattle={SetPokeBattle}
             SetPokeBattle2={SetPokeBattle2}
+            SetPokeBattlesType={SetPokeBattlesType}
+            SetPokeBattlesType2={SetPokeBattlesType2}
             SetBattleCheck={SetBattleCheck}
             BattleCheck={BattleCheck}
           />

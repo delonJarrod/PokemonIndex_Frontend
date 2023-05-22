@@ -106,7 +106,7 @@ function PokeBattleCard({
                       class="bg-green-600 h-6 rounded-full dark:bg-green-500 text-white font-bold"
                       style={progressStyle}
                     >
-                      {Fighter === 1 ? `${PokeHp}%` : `${PokeHpOp}%`}
+                      {Fighter === 1 ? `${PokeHp}` : `${PokeHpOp}`}
                     </div>
                   </div>
                   <p>Attack:</p>
