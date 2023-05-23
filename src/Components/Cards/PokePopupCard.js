@@ -113,14 +113,18 @@ function PokePopupCard({
   function SelectBattle(name, e) {
     e.preventDefault();
     if (BattleCheck <= 1) {
-      if (BattleCheck == 0) {
-        SetPokeBattle(name);
-        SetPokeBattlesType(PokeType);
-      }
-      if (BattleCheck == 1) {
-        SetPokeBattle2(name);
-        SetPokeBattlesType2(PokeType);
-      }
+      SetPokeBattle(name);
+      SetPokeBattlesType(PokeType);
+    }
+    checker = checker + 1;
+    SetBattleCheck(checker);
+    show(false);
+  }
+  function SelectBattle2(name, e) {
+    e.preventDefault();
+    if (BattleCheck <= 1) {
+      SetPokeBattle2(name);
+      SetPokeBattlesType2(PokeType);
     }
     checker = checker + 1;
     SetBattleCheck(checker);
@@ -139,19 +143,34 @@ function PokePopupCard({
             <div className="text-center pt-5 pb-5 col-span-2">
               <p className="text-2xl font-bold">{PokeName}</p>
             </div>
-
-            <button
-              onClick={(e) => SelectBattle({ PokeName }, e)}
-              class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
-            >
-              Select
-            </button>
+            <div className="grid grid-cols-1 gap-6">
+              <button
+                onClick={(e) => SelectBattle({ PokeName }, e)}
+                class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+              >
+                Pokemon 1
+              </button>
+              <button
+                onClick={(e) => SelectBattle2({ PokeName }, e)}
+                class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+              >
+                Pokemon 2
+              </button>
+            </div>
 
             <button
               onClick={ViewDetails}
-              class=" w-full rounded-b-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+              class=" w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
             >
               View Details
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={close}
+              class="w-full rounded-lg text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
+            >
+              Close
             </button>
           </div>
         </div>

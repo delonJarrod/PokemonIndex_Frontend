@@ -164,14 +164,7 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-6">
-                    <div>
-                      <button
-                        onClick={battle}
-                        class=" w-full rounded-3xl text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
-                      >
-                        Change
-                      </button>
-                    </div>
+                    <div></div>
                     <div>
                       <button
                         onClick={battle}
@@ -181,14 +174,7 @@ function Pokemon({ cardData, cardClear, SetCardClear, SetcardData }) {
                       </button>
                     </div>
 
-                    <div>
-                      <button
-                        onClick={battle}
-                        class=" w-full rounded-3xl text-center text-white bg-red-600 border-0 py-2 px-6 focus:outline-none hover:bg-red-700 rounded text-sm"
-                      >
-                        Change
-                      </button>
-                    </div>
+                    <div></div>
                   </div>
                 </div>
               )}

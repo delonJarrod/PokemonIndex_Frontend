@@ -25,110 +25,102 @@ function Battle({
   const [PokeAttack, SetPokeAttack] = useState([]);
   const [BattleText, SetBattleText] = useState("Begin!!!");
 
-  // User Effect
-  useEffect(() => {
-    // TypeEffectiveness();
-  }, []);
-
   // Main function to handle battle each battle phase
   function Battle(move, PokeName, Fighter) {
-    debugger;
     TypeEffectiveness(move, Fighter);
-    // Type Effectiveness Logic
-    var point = BattleCalc();
+    const point = BattleCalc();
+    let battleText = "";
 
-    if (point === 0 || point === 10 || point === 20 || point === 30) {
-      SetBattleText(PokeName.PokeName + " Missed!");
+    if ([0, 10, 20, 30].includes(point)) {
+      battleText = PokeName.PokeName + " Missed!";
+      Missed(Fighter);
     } else if (point >= 50) {
-      SetBattleText(PokeName.PokeName + " Used " + move + ", Critical Hit");
+      battleText = PokeName.PokeName + " Used " + move + ", Critical Hit";
+      HpCalc(Fighter, PokeName, point);
     } else if (point >= 35) {
-      SetBattleText(
-        PokeName.PokeName + " Used " + move + ", It was super effective"
-      );
+      battleText =
+        PokeName.PokeName + " Used " + move + ", It was super effective";
+      HpCalc(Fighter, PokeName, point);
     } else {
-      SetBattleText(PokeName.PokeName + " Used " + move + ", It was effective");
+      battleText = PokeName.PokeName + " Used " + move + ", It was effective";
+      HpCalc(Fighter, PokeName, point);
     }
 
-    // Type Effectiveness Logic End
+    SetBattleText(battleText);
+    SetRound((prevRound) => prevRound + 1);
+  }
 
-    //Logic for Pokemon 1
+  // Function to get Type Effectiveness of each move
+  function TypeEffectiveness(Move, Fighter) {
+    const getMove = MovesType.find((x) => x.name === Move);
+    if (getMove) {
+      const getType = getMove.type;
+      if (PokeJson.hasOwnProperty(getType)) {
+        const matchingObject = PokeJson[getType];
+        let point = 0;
+        const PokeBattlesTypeArray =
+          Fighter === 1 ? PokeBattlesType : PokeBattlesType2;
+
+        for (let key in matchingObject) {
+          if (
+            matchingObject.hasOwnProperty(key) &&
+            PokeBattlesTypeArray.includes(key)
+          ) {
+            const value = matchingObject[key];
+            point += value;
+            // Additional code logic for when a matching key is found
+          }
+        }
+
+        SetPokeAmplifier(point);
+      }
+    }
+  }
+  // Function ton calc the new pokepower
+  function BattleCalc() {
+    if (PokeAmplifier < 0) {
+      return PokePower - Math.floor(Math.random() * 10);
+    } else if (PokeAmplifier <= 1) {
+      return PokePower - Math.floor(Math.random() * 10);
+    } else if (PokeAmplifier <= 2) {
+      return PokePower + Math.floor(Math.random() * 20) + 10;
+    } else {
+      return PokePower + Math.floor(Math.random() * 30) + 20;
+    }
+  }
+
+  function HpCalc(Fighter, PokeName, point) {
     if (Fighter === 1) {
-      let newHP = PokeHpOp - PokePower;
-      if (newHP <= 0) {
-        newHP = 0;
-        SetWinner(PokeName.PokeName + " Is the winner");
+      const newHP = Math.max(PokeHpOp - point, 0);
+      if (newHP === 0) {
+        SetWinner(PokeName.PokeName + " is the winner");
       }
       SetPokeHpOp(newHP);
       SetDisableButton(false);
       SetDisableButtonFighter(true);
     }
 
-    //Logic for Pokemon 2
     if (Fighter === 2) {
-      let newHP = PokeHp - PokePower;
-      if (newHP <= 0) {
-        newHP = 0;
-        SetWinner(PokeName.PokeName + " Is the winner");
+      const newHP = Math.max(PokeHp - point, 0);
+      if (newHP === 0) {
+        SetWinner(PokeName.PokeName + " is the winner");
       }
       SetPokeHp(newHP);
       SetDisableButton(true);
       SetDisableButtonFighter(false);
     }
-    SetRound((prevRound) => prevRound + 1);
   }
 
-  // Function to get Type Effectiveness of each move
-  function TypeEffectiveness(Move, Fighter) {
-    let point = 0;
-    let getMove = MovesType.filter((x) => x.name === Move);
-    let getType = getMove[0].type;
+  function Missed(Fighter) {
+    if (Fighter === 1) {
+      SetDisableButton(false);
+      SetDisableButtonFighter(true);
+    }
 
-    if (PokeJson.hasOwnProperty(getType)) {
-      let matchingObject = PokeJson[getType];
-      for (let key in matchingObject) {
-        if (Fighter === 1) {
-          if (
-            matchingObject.hasOwnProperty(key) &&
-            PokeBattlesType.includes(key)
-          ) {
-            let value = matchingObject[key];
-            point += value;
-            console.log(`Key '${key}' exists in matching Types 1.`);
-            console.log(`Value: ${value}`);
-            // Additional code logic for when a matching key is found
-          }
-        } else {
-          if (
-            matchingObject.hasOwnProperty(key) &&
-            PokeBattlesType2.includes(key)
-          ) {
-            let value = matchingObject[key];
-            point += value;
-            console.log(`Key '${key}' exists in matching Types 2.`);
-            console.log(`Value: ${value}`);
-            // Additional code logic for when a matching key is found
-          }
-        }
-      }
+    if (Fighter === 2) {
+      SetDisableButton(true);
+      SetDisableButtonFighter(false);
     }
-    SetPokeAmplifier(point);
-  }
-  // Function ton calc the new pokepower
-  function BattleCalc() {
-    debugger;
-    var point;
-    if (PokeAmplifier < 0) {
-      point = PokePower - Math.floor(Math.random() * 10);
-    } else if (PokeAmplifier > 0 && PokeAmplifier <= 1) {
-      point = PokePower - Math.floor(Math.random() * 10);
-    } else if (PokeAmplifier >= 1 && PokeAmplifier <= 2) {
-      point = PokePower + Math.floor(Math.random() * 20) + 10;
-    } else if (PokeAmplifier >= 2) {
-      point = PokePower + Math.floor(Math.random() * 30) + 20;
-    } else if (PokeAmplifier === 0) {
-      point = 0;
-    }
-    return point;
   }
 
   function CloseBattle() {
